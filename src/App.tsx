@@ -1,9 +1,21 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import { NavbarComponent } from './components/NavbarComponent';
-import { AdGrid } from './components/AdGrid';
-import styled from 'styled-components';
-import { GlobalStyle } from './styles/GlobalStyle';
+import React from "react";
+import { Container } from "react-bootstrap";
+import { NavbarComponent } from "./components/NavbarComponent";
+import { AdGrid } from "./components/AdGrid";
+import { CreatorDashboard } from "./pages/CreatorDashboard";
+import { LoginPage } from "./pages/LoginPage"; // <-- 1. Import
+import styled from "styled-components";
+import { GlobalStyle } from "./styles/GlobalStyle";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SignUpPage } from "./pages/SignUpPage";
+import { OrderPage } from "./pages/OrderPage";
+import { BillingPage } from "./pages/BillingPage";
+import { TariffCalculator } from "./pages/TariffCalculator";
+import { HowItWorks } from "./pages/HowItWorks";
+import { LandingPage } from "./pages/LandingPage";
+import { AdvertiserUploadPage } from "./pages/AdvertiserUploadPage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 const PageWrapper = styled.div`
   background-color: #fff6ed;
@@ -21,14 +33,40 @@ const Title = styled.h1`
 
 const App: React.FC = () => {
   return (
-    <PageWrapper>
-      <GlobalStyle />
-      <NavbarComponent />
-      <Container>
-        <Title>Discover Ad Promotions</Title>
-        <AdGrid />
-      </Container>
-    </PageWrapper>
+    <Router>
+      <PageWrapper>
+        <GlobalStyle />
+        <NavbarComponent />
+        <Container>
+          <Routes>
+            <Route
+              path="/market"
+              element={
+                <>
+                  <Title>Discover Ad Promotions</Title>
+                  <AdGrid />
+                </>
+              }
+            />
+              <Route path="/" element={<LandingPage />} />
+            <Route path="/dashboard" element={<CreatorDashboard />} />
+            <Route
+              path="/login"
+              element={<LoginPage />} // <-- 2. Add Login route
+            />
+            {/* If you make a SignUpPage, add here as well: */}
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/order" element={<OrderPage />} />
+            <Route path="/billing" element={<BillingPage />} />
+            <Route path="/tarrif" element={<TariffCalculator />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+              <Route path="/advertiser/:upload" element={  <AdvertiserUploadPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+          
+          </Routes>
+        </Container>
+      </PageWrapper>
+    </Router>
   );
 };
 

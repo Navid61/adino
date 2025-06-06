@@ -1,13 +1,7 @@
 import React from "react";
 import { Card, Badge, Button } from "react-bootstrap";
 import { AdCardWrapper } from "../styles/AdCard.styled";
-import {
-  Calendar,
-  Clock,
-  HandThumbsUp,
-  Person,
-  CurrencyDollar,
-} from "react-bootstrap-icons";
+import { Calendar, Clock, Person, CurrencyDollar } from "react-bootstrap-icons";
 import {
   FaInstagram,
   FaTiktok,
@@ -24,7 +18,59 @@ const platformIcons = new Map<string, React.ReactNode>([
   ["YouTube", <FaYoutube key="youtube" />],
 ]);
 
-// Define a new type for better campaign info clarity
+const translations = {
+  en: {
+    labels: {
+      followers: "Minimum number of followers your social page must have.",
+      totalValue: "Total Campaign Value",
+      earn: "You earn",
+      forEach: "for each approved",
+      contentType: "Content Type",
+      bestTime: "Time to Post",
+      frequency: "Post Frequency",
+      deadline: "Deadline",
+      postingRules: "Posting Rules",
+      rating: "Advertiser Rating",
+      reserved: "Reserved",
+      remaining: "Remaining Spots",
+      of: "of",
+      slotsFilled: "slots filled",
+      spotsLeft: "spots left",
+    },
+    mediaType: {
+      Video: "Video",
+      Post: "Post",
+      Reel: "Reel",
+      Story: "Story",
+    },
+  },
+  fa: {
+    labels: {
+      followers: "تعداد دنبال کننده‌های که باید صفحه شما داشته باشد",
+      totalValue: "ارزش کل کمپین",
+      earn: "درآمد شما",
+      forEach: "برای هر",
+      contentType: "نوع محتوا",
+      bestTime: "زمان انتشار",
+      frequency: "تعداد دفعات پست",
+      deadline: "مهلت انتشار",
+      postingRules: "قوانین انتشار",
+      rating: "امتیاز آگهی‌دهنده",
+      reserved: "رزرو شده",
+      remaining: "ظرفیت باقی مانده",
+      of: "از",
+      slotsFilled: "ظرفیت پر شده",
+      spotsLeft: "جای خالی",
+    },
+    mediaType: {
+      Video: "ویدیو",
+      Post: "پست",
+      Reel: "ریل",
+      Story: "استوری",
+    },
+  },
+};
+
 export type AdCardProps = {
   title: string;
   platform: string;
@@ -34,15 +80,16 @@ export type AdCardProps = {
   actionLabel: string;
   description: string;
   mediaType: "Story" | "Post" | "Reel" | "Video";
-  postDuration: string; // e.g., "15 seconds", "1 minute"
+  postDuration: string;
   contentRules?: string;
   bestTimeToPost: string;
   recommendedFrequency: string;
-  engagementRate: string;
   campaignDeadline: string;
   platformTip?: string;
   cta?: string;
   rating?: number;
+  capacity?: number; // Total number of slots available
+  reserved?: number; // Number of slots already filled/reserved
   language?: "en" | "fa";
 };
 
@@ -59,28 +106,33 @@ export const AdCard: React.FC<AdCardProps> = ({
   contentRules,
   bestTimeToPost,
   recommendedFrequency,
-  engagementRate,
   campaignDeadline,
   platformTip,
   cta,
   rating,
+  capacity,
+  reserved,
   language = "en",
 }) => {
+  const { labels, mediaType: mediaTranslations } = translations[language];
+  const translatedMediaType = mediaTranslations[mediaType];
+
+   const hasCapacity =
+    typeof capacity === "number" &&
+    typeof reserved === "number" &&
+    capacity > 0 &&
+    reserved >= 0;
+  const remaining = hasCapacity ? capacity - reserved : undefined;
+
   return (
     <AdCardWrapper>
       <Card dir={language === "fa" ? "rtl" : "ltr"}>
         <Card.Body>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <div className="d-flex justify-content-between align-items-center">
             <Card.Title>{title}</Card.Title>
             <div className="d-flex align-items-center gap-2">
               <span style={{ fontSize: "1.2rem" }}>
-                {platformIcons.get(platform) || null}
+                {platformIcons.get(platform)}
               </span>
               <Badge bg="info">{platform}</Badge>
             </div>
@@ -91,12 +143,11 @@ export const AdCard: React.FC<AdCardProps> = ({
           </Card.Subtitle>
 
           <div className="mb-2">
-            <Person /> <strong>Followers:</strong> {followers} {" "}
-            <HandThumbsUp /> <strong>Engagement:</strong> {engagementRate}
+            <Person /> <strong>{labels.followers}:</strong> {followers}{" "}
           </div>
 
           <div>
-            <strong>Total Campaign Value:</strong>{" "}
+            <strong>{labels.totalValue}:</strong>{" "}
             <span style={{ color: "#28a745", fontWeight: "bold" }}>
               ${price}
             </span>{" "}
@@ -104,29 +155,38 @@ export const AdCard: React.FC<AdCardProps> = ({
           </div>
 
           <div className="earnings">
-            <CurrencyDollar /> You earn <strong>${payPerPost}</strong> for each approved {mediaType.toLowerCase()}.
+            <CurrencyDollar /> {labels.earn} <strong>${payPerPost}</strong>{" "}
+            {labels.forEach} {translatedMediaType}.
           </div>
 
           <div>
-            <strong>Content Type:</strong> {mediaType} ({postDuration})
+            <strong>{labels.contentType}:</strong> {translatedMediaType} (
+            {postDuration})
           </div>
 
           <div>
-            <Clock /> <strong>Best Time to Post:</strong> {bestTimeToPost}
+            <Clock /> <strong>{labels.bestTime}:</strong> {bestTimeToPost}
           </div>
 
           <div>
-            <Calendar /> <strong>Post Frequency:</strong> {recommendedFrequency}
+            <Calendar /> <strong>{labels.frequency}:</strong>{" "}
+            {recommendedFrequency}
           </div>
 
           <div>
-            <strong>Deadline:</strong>{" "}
+            <strong>{labels.deadline}:</strong>{" "}
             <span className="deadline">{campaignDeadline}</span>
           </div>
 
           {contentRules && (
-            <div style={{ color: "#6c757d", fontSize: "0.9em", marginTop: "0.5em" }}>
-              <strong>Posting Rules:</strong> {contentRules}
+            <div
+              style={{
+                color: "#6c757d",
+                fontSize: "0.9em",
+                marginTop: "0.5em",
+              }}
+            >
+              <strong>{labels.postingRules}:</strong> {contentRules}
             </div>
           )}
 
@@ -134,10 +194,35 @@ export const AdCard: React.FC<AdCardProps> = ({
 
           {rating && (
             <div className="rating-stars">
-              <strong>Advertiser Rating:</strong>{" "}
+              <strong>{labels.rating}:</strong>{" "}
               {Array.from({ length: rating }).map((_, i) => (
                 <span key={i}>⭐</span>
               ))}
+            </div>
+          )}
+
+          {hasCapacity && (
+            <div className="mb-2" style={{ fontSize: "1.05em" }}>
+              <Badge
+                bg={
+                  remaining === 0
+                    ? "danger"
+                      : typeof remaining === "number" && remaining < 3
+                    ? "warning"
+                    : "secondary"
+                }
+                className="me-1"
+              >
+                {reserved} {labels.of} {capacity} {labels.slotsFilled}
+              </Badge>
+              <span style={{ marginLeft: 8 }}>
+                {labels.remaining}:{" "}
+                <strong
+                  style={{ color: remaining === 0 ? "#dc3545" : "#28a745" }}
+                >
+                  {remaining} {labels.spotsLeft}
+                </strong>
+              </span>
             </div>
           )}
 
