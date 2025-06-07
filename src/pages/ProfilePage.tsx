@@ -136,13 +136,13 @@ export const ProfilePage: React.FC = () => {
         <h3>Notifications & Preferences</h3>
         <PrefsRow>
           <CheckboxLabel>
-            <input type="checkbox" defaultChecked /> Email Alerts
+            <input type="checkbox" defaultChecked title="Email Alerts" /> Email Alerts
           </CheckboxLabel>
           <CheckboxLabel>
-            <input type="checkbox" /> WhatsApp Alerts
+            <input type="checkbox" title="WhatsApp Alerts" /> WhatsApp Alerts
           </CheckboxLabel>
           <CheckboxLabel>
-            <input type="checkbox" /> SMS Alerts
+            <input type="checkbox" title="SMS Alerts" /> SMS Alerts
           </CheckboxLabel>
         </PrefsRow>
       </Section>

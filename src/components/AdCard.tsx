@@ -74,7 +74,7 @@ const labelsFa = {
 // Convert English numbers to Farsi for readability
 function faNum(str: string | number) {
   const faDigits = "۰۱۲۳۴۵۶۷۸۹";
-  return String(str).replace(/\d/g, d => faDigits[d as any]);
+  return String(str).replace(/\d/g, (d: string) => faDigits[parseInt(d, 10)]);
 }
 
 export type AdCardProps = {
@@ -141,7 +141,7 @@ export const AdCard: React.FC<AdCardProps> = ({
   // Choose labels and helpers by language
   const labels = language === "fa" ? labelsFa : labelsEn;
   const dir = language === "fa" ? "rtl" : "ltr";
-  const toDisplay = language === "fa" ? faNum : (n: any) => n;
+  const toDisplay = language === "fa" ? faNum : (n: string | number) => n;
 
   const hasCapacity =
     typeof capacity === "number" &&
@@ -256,7 +256,7 @@ export const AdCard: React.FC<AdCardProps> = ({
               <span>
                 {labels.remaining}:{" "}
                 <strong style={{ color: remaining === 0 ? "#dc3545" : "#28a745" }}>
-                  {toDisplay(remaining)} {labels.spotsLeft}
+                  {toDisplay(remaining ?? 0)} {labels.spotsLeft}
                 </strong>
               </span>
             </div>
