@@ -16,6 +16,7 @@ import { HowItWorks } from "./pages/HowItWorks";
 import { LandingPage } from "./pages/LandingPage";
 import { AdvertiserUploadPage } from "./pages/AdvertiserUploadPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { AdCardCreator } from "./pages/AdCardCreator";
 
 const PageWrapper = styled.div`
   background-color: #fff6ed;
@@ -62,6 +63,8 @@ const App: React.FC = () => {
             <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/advertiser/:upload" element={  <AdvertiserUploadPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/adcreator" element={  <AdCardCreator />} />
+            
           
           </Routes>
         </Container>

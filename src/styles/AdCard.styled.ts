@@ -7,72 +7,82 @@ export const AdCardWrapper = styled.div`
 
   .card {
     width: 100%;
-    max-width: 410px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(6px);
-    border-radius: 20px;
-    box-shadow: 0 12px 36px 0 rgba(130, 46, 222, 0.12), 0 2px 8px 0 rgba(40, 42, 65, 0.12);
-    transition: transform 0.19s cubic-bezier(0.44, 0.13, 0.48, 0.87), box-shadow 0.17s;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 28px 0 rgba(65, 80, 120, 0.09), 0 2px 8px 0 rgba(40, 42, 65, 0.09);
+    transition: transform 0.19s, box-shadow 0.17s;
+    border: 1.5px solid #f4f6fb;
 
     &:hover {
       transform: scale(1.035) translateY(-4px);
-      box-shadow: 0 24px 56px 0 rgba(130, 46, 222, 0.18), 0 4px 16px 0 rgba(40, 42, 65, 0.18);
-      border: 1.5px solid #8e44ad33;
+      box-shadow: 0 24px 56px 0 rgba(80, 80, 130, 0.13), 0 4px 16px 0 rgba(40, 42, 65, 0.12);
+      border: 1.5px solid #d0d5e3;
     }
 
     .card-body {
-      padding: 2rem 1.7rem 1.7rem 1.7rem;
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
 
     .card-title {
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       font-weight: bold;
-      letter-spacing: 0.04em;
-      color: #9b59b6;
-      background: linear-gradient(90deg, #a4508b, #5f0a87 80%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #3951a5;
+      background: none;
+      -webkit-background-clip: initial;
+      -webkit-text-fill-color: initial;
     }
 
-    .badge,
-    .cta-badge {
-      display: inline-block;
-      padding: 0.38em 0.8em;
-      font-size: 1em;
-      border-radius: 1em;
-      background: linear-gradient(90deg, #fc466b 0%, #3f5efb 100%);
-      color: #fff;
-      font-weight: bold;
-      box-shadow: 0 2px 10px 0 rgba(255, 80, 90, 0.13);
-      margin-right: 0.7em;
-    }
-
-    .cta-badge {
-      background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%);
-      color: #222;
-      font-size: 1.08em;
-      box-shadow: 0 2px 16px 0 rgba(255, 180, 40, 0.14);
-    }
-
-    .info-row {
-      display: flex;
-      align-items: center;
-      gap: 1em;
-      font-size: 1.08em;
-    }
-
-    .info-label {
+    .badge-plain {
+      background: transparent;
+      color: #3951a5;
       font-weight: 600;
-      color: #4d2067;
-      margin-right: 0.4em;
+      font-size: 1.05em;
+      padding: 0.2em 0.6em;
+      border: 1.2px solid #e1e9fa;
+      border-radius: 10px;
+      margin-right: 0.5em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      box-shadow: none;
     }
 
-    .info-value {
+    .badge-outline,
+    .cta-badge,
+    .bonus-badge {
+      background: transparent;
+      border: 1px solid #dde5fa;
+      color: #294076;
+      font-size: 1em;
+      padding: 0.19em 0.7em;
+      border-radius: 10px;
+      margin-left: 0.5em;
       font-weight: 500;
-      color: #282841;
+      box-shadow: none;
+      display: inline-block;
+    }
+    .cta-badge {
+      border-color: #fcd770;
+      color: #8a7018;
+      background: #fffbe8;
+    }
+    .bonus-badge {
+      border-color: #c8e6c9;
+      color: #256029;
+      background: #f3fcf6;
+    }
+    .status-badge {
+      margin-left: 0.4em;
+      margin-right: 0.4em;
+      font-size: 0.96em;
+      font-weight: 600;
+      border-radius: 8px;
+      letter-spacing: 0.03em;
+      vertical-align: middle;
     }
 
     .deadline {
@@ -84,13 +94,16 @@ export const AdCardWrapper = styled.div`
 
     .platform-tip {
       font-style: italic;
-      color: #2193b0;
-      font-size: 0.97em;
+      color: #348e54;
+      font-size: 0.99em;
       margin-top: 0.7em;
+      background: #f7faf7;
+      border-radius: 6px;
+      padding: 0.2em 0.6em;
     }
 
     .rating-stars {
-      font-size: 1.15em;
+      font-size: 1.07em;
       color: #ffd700;
       margin-top: 0.5em;
     }
@@ -98,7 +111,7 @@ export const AdCardWrapper = styled.div`
     .earnings {
       font-weight: bold;
       color: #28a745;
-      font-size: 1.1em;
+      font-size: 1.09em;
       display: flex;
       align-items: center;
       gap: 0.4em;
@@ -113,8 +126,8 @@ export const AdCardWrapper = styled.div`
       padding: 0.65em 1.2em;
       border-radius: 12px;
       color: #222;
-      box-shadow: 0 2px 12px rgba(0, 180, 120, 0.2);
-      transition: transform 0.2s ease-in-out;
+      box-shadow: 0 2px 12px rgba(0, 180, 120, 0.13);
+      transition: transform 0.18s;
 
       &:hover {
         transform: scale(1.04);
@@ -125,8 +138,8 @@ export const AdCardWrapper = styled.div`
 
   @media (max-width: 700px) {
     .card {
-      max-width: 97vw;
-      padding: 0.7em;
+      max-width: 99vw;
+      padding: 0.4em;
     }
     .card-body {
       padding: 1.1rem 0.7rem 0.7rem 0.7rem;
@@ -137,3 +150,4 @@ export const AdCardWrapper = styled.div`
     }
   }
 `;
+
