@@ -1,5 +1,9 @@
 import React from "react";
-import { Card, Badge, Button, ProgressBar } from "react-bootstrap";
+import {
+  Card, Badge, Button, ProgressBar, OverlayTrigger, Tooltip,
+} from "react-bootstrap";
+import { QuestionCircle } from "react-bootstrap-icons";
+
 import { AdCardWrapper } from "../styles/AdCard.styled";
 import {
   Calendar, Clock, Person, CurrencyDollar, PeopleFill,
@@ -7,6 +11,11 @@ import {
 import {
   FaInstagram, FaTiktok, FaFacebookF, FaPinterestP, FaYoutube,
 } from "react-icons/fa";
+// FIX: Adjust the import path as needed, for example:
+import { ContentProvider, PROVIDER_LABELS } from "./providersType/providerType";
+
+// Or, if the file is actually at src/components/providerType.ts or similar, use:
+// import { ContentProvider, PROVIDER_LABELS } from "./providerType";
 
 const platformIcons = new Map([
   ["Instagram", <FaInstagram key="instagram" />],
@@ -25,11 +34,13 @@ const statusColors = {
 
 const labelsEn = {
   followers: "Minimum Followers",
-  maxParticipents:"Participents",
+  maxParticipents: "Participants",
   totalValue: "Total Campaign Value",
   earn: "You earn",
   forEach: "for each approved",
   contentType: "Content Type",
+  provider: "Content Provider",
+  providerTip: "Who creates the content: the advertiser/company or the campaign participants.",
   bestTime: "Time to Post",
   frequency: "Post Frequency",
   deadline: "Join Deadline",
@@ -50,11 +61,13 @@ const labelsEn = {
 
 const labelsFa = {
   followers: "حداقل دنبال‌کننده",
-  maxParticipents:"مشارکت کننده‌ها",
+  maxParticipents: "مشارکت کننده‌ها",
   totalValue: "ارزش کل کمپین",
   earn: "درآمد شما",
   forEach: "برای هر تأیید شده",
   contentType: "نوع محتوا",
+  provider: "تولید کننده محتوا",
+  providerTip: "چه کسی محتوا را تولید می‌کند؟ شرکت تبلیغ‌دهنده یا شرکت‌کنندگان کمپین.",
   bestTime: "زمان انتشار",
   frequency: "تعداد دفعات انتشار",
   deadline: "مهلت پیوستن",
@@ -73,7 +86,17 @@ const labelsFa = {
   status: "وضعیت",
 };
 
-// Convert English numbers to Farsi for readability
+const PROVIDER_TYPES: Record<"en" | "fa", Record<string, string>> = {
+  en: {
+    company: "Advertiser/Company",
+    participant: "Participant/Creator"
+  },
+  fa: {
+    company: "شرکت تبلیغ‌دهنده",
+    participant: "شرکت‌کننده"
+  }
+};
+
 function faNum(str: string | number) {
   const faDigits = "۰۱۲۳۴۵۶۷۸۹";
   return String(str).replace(/\d/g, (d: string) => faDigits[parseInt(d, 10)]);
@@ -84,7 +107,7 @@ export type AdCardProps = {
   platform: string;
   campaignType?: string;
   followers: number;
-  participents:number;
+  participents: number;
   price: number;
   payPerPost: number;
   actionLabel: string;
@@ -108,6 +131,7 @@ export type AdCardProps = {
   socialProof?: number;
   bonusInfo?: string;
   status?: "Open" | "Almost Full" | "Closed" | "Ended";
+   provider: ContentProvider; 
   language?: "en" | "fa";
 };
 
@@ -124,6 +148,7 @@ export const AdCard: React.FC<AdCardProps> = ({
   mediaType,
   postDuration,
   contentRules,
+  provider,
   bestTimeToPost,
   recommendedFrequency,
   campaignDeadline,
@@ -142,10 +167,11 @@ export const AdCard: React.FC<AdCardProps> = ({
   status = "Open",
   language = "en",
 }) => {
-  // Choose labels and helpers by language
+  // Labels and RTL/LTR helpers
   const labels = language === "fa" ? labelsFa : labelsEn;
   const dir = language === "fa" ? "rtl" : "ltr";
   const toDisplay = language === "fa" ? faNum : (n: string | number) => n;
+  const providerDisplay = PROVIDER_LABELS[language][provider];
 
   const hasCapacity =
     typeof capacity === "number" &&
@@ -203,21 +229,18 @@ export const AdCard: React.FC<AdCardProps> = ({
             </div>
           )}
 
-        <div className="mb-2 d-flex flex-wrap gap-3 align-items-center">
-  <span>
-    <Person /> <strong>{labels.followers}:</strong> {toDisplay(followers)}
-  </span>
-  {hasCapacity && (
-    <span>
-      <PeopleFill style={{ verticalAlign: "middle", marginLeft: 2, marginRight: 2 }} />
-      <strong>{language === "fa" ? "تعداد شرکت‌کنندگان" : "Participants"}:</strong>{" "}
-      {toDisplay(participents)}
-    </span>
-  )}
-</div>
-
-
-          
+          {/* Followers and Participants */}
+          <div className="mb-2 d-flex flex-wrap gap-3 align-items-center">
+            <span>
+              <Person /> <strong>{labels.followers}:</strong> {toDisplay(followers)}
+            </span>
+            {hasCapacity && (
+              <span>
+                <PeopleFill style={{ verticalAlign: "middle", marginLeft: 2, marginRight: 2 }} />
+                <strong>{labels.maxParticipents}:</strong> {toDisplay(participents)}
+              </span>
+            )}
+          </div>
 
           {/* Value & Payouts */}
           <div>
@@ -230,10 +253,27 @@ export const AdCard: React.FC<AdCardProps> = ({
             <CurrencyDollar /> {labels.earn} <strong>{toDisplay(payPerPost)}$</strong> {labels.forEach} {mediaType}.
           </div>
 
-          {/* Content requirements */}
-          <div>
-            <strong>{labels.contentType}:</strong> {mediaType} ({toDisplay(postDuration)})
+         {/* Example: provider with tooltip */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {/* ...other content type info */}
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="provider-tip">{labels.providerTip}</Tooltip>}
+            >
+              <span style={{ display: "inline-flex", alignItems: "center", cursor: "pointer" }}>
+                <QuestionCircle size={16} style={{ marginLeft: 2, color: "#9b59b6" }} />
+                <span style={{
+                  fontSize: "0.99em",
+                  fontWeight: 500,
+                  marginLeft: language === "fa" ? 0 : 4,
+                  marginRight: language === "fa" ? 4 : 0,
+                }}>
+                  {labels.provider}: {providerDisplay}
+                </span>
+              </span>
+            </OverlayTrigger>
           </div>
+
           {contentRules && (
             <div style={{
               color: "#6c757d", fontSize: "0.9em", marginTop: "0.3em",
