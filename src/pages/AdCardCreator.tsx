@@ -8,6 +8,9 @@ import {
   FaInstagram, FaTiktok, FaFacebookF, FaPinterestP, FaYoutube,
 } from "react-icons/fa";
 
+import { PROVIDER_LABELS, ContentProvider } from "../components/providersType/providerType"; // update path as needed
+
+
 const PLATFORMS = [
   { name: "Instagram", icon: <FaInstagram color="#e1306c" /> },
   { name: "TikTok", icon: <FaTiktok color="#000" /> },
@@ -42,6 +45,8 @@ const defaultState = {
   mediaType: "Post" as "Post" | "Reel" | "Story" | "Video",
   postDuration: "",
   followers: 0,
+   participants: 1, // default to 1
+  provider: ContentProvider.Company, // default to company/provider type
   price: 0,
   payPerPost: 0,
   bonusInfo: "",
@@ -72,6 +77,10 @@ export const AdCardCreator: React.FC = () => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
+  const PROVIDER_OPTIONS = [
+  { value: ContentProvider.Company, label: PROVIDER_LABELS.en[ContentProvider.Company] },
+  { value: ContentProvider.Participant, label: PROVIDER_LABELS.en[ContentProvider.Participant] }
+];
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
     const reader = new FileReader();
@@ -176,6 +185,8 @@ export const AdCardCreator: React.FC = () => {
             {CONTENT_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
           </select>
         </Field>
+
+
         <Field>
           <label>Post Duration</label>
           <input
@@ -197,6 +208,31 @@ export const AdCardCreator: React.FC = () => {
             placeholder="Enter minimum followers"
           />
         </Field>
+<Field>
+  <label>Participants</label>
+  <input
+    type="number"
+    min={1}
+    value={form.participants}
+    onChange={e => handleChange("participants", Number(e.target.value))}
+    title="Number of Participants"
+    placeholder="Enter number of participants"
+  />
+</Field>
+
+<Field>
+  <label>Content Provider</label>
+  <select
+    value={form.provider}
+    onChange={e => handleChange("provider", e.target.value as typeof form.provider)}
+    title="Content Provider"
+  >
+    {PROVIDER_OPTIONS.map(opt => (
+      <option key={opt.value} value={opt.value}>{opt.label}</option>
+    ))}
+  </select>
+</Field>
+
         <Field>
           <label>Total Value ($)</label>
           <input
