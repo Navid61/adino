@@ -9,7 +9,7 @@ import { GlobalStyle } from "./styles/GlobalStyle";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SignUpPage } from "./pages/SignUpPage";
-import { OrderPage } from "./pages/OrderPage";
+import { InquiryPage } from "./pages/InquiryPage";
 import { BillingPage } from "./pages/BillingPage";
 import { TariffCalculator } from "./pages/TariffCalculator";
 import { HowItWorks } from "./pages/HowItWorks";
@@ -57,7 +57,7 @@ const App: React.FC = () => {
             />
             {/* If you make a SignUpPage, add here as well: */}
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/order" element={<OrderPage />} />
+            <Route path="/inquiry" element={<InquiryPage />} />
             <Route path="/billing" element={<BillingPage />} />
             <Route path="/tarrif" element={<TariffCalculator />} />
             <Route path="/how-it-works" element={<HowItWorks />} />

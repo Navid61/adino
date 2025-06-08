@@ -17,17 +17,18 @@ export const NavbarComponent: React.FC = () => {
             <Nav.Link as={Link} to="/how-it-works">
               How It Works
             </Nav.Link>
-            <Nav.Link as={Link} to="/order">
+            <Nav.Link as={Link} to="/inquiry">
               Start Your Ad Compain
             </Nav.Link>
-            <Nav.Link as={Link} to="/billing">
+            {/* <Nav.Link as={Link} to="/billing">
               Billing
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about">
-              About Us
-            </Nav.Link>
+            </Nav.Link> */}
+         
             <Nav.Link as={Link} to="/tarrif">
               Tarrif
+            </Nav.Link>
+               <Nav.Link as={Link} to="/about">
+              About Us
             </Nav.Link>
           </Nav>
           <Nav>

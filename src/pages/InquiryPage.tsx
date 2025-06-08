@@ -14,7 +14,7 @@ import {
   FormButton,
   MorePlatformsSelect,
   SummaryCard,
-} from '../styles/OrderPageStyled';
+} from '../styles/Inquiry.styled';
 
 import { FaInstagram, FaTiktok, FaYoutube, FaPinterestP, FaTelegram, FaLinkedin, FaFacebookF, FaXTwitter } from "react-icons/fa6";
 
@@ -34,7 +34,7 @@ const OTHER_PLATFORMS = [
   "Reddit", "Dribbble", "Threads", "WhatsApp", "Snapchat", "Medium"
 ];
 
-export const OrderPage: React.FC = () => {
+export const InquiryPage: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const [other, setOther] = useState('');
   const [campaignName, setCampaignName] = useState('');
