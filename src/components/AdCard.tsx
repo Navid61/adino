@@ -25,6 +25,7 @@ const statusColors = {
 
 const labelsEn = {
   followers: "Minimum Followers",
+  maxParticipents:"Participents",
   totalValue: "Total Campaign Value",
   earn: "You earn",
   forEach: "for each approved",
@@ -49,6 +50,7 @@ const labelsEn = {
 
 const labelsFa = {
   followers: "حداقل دنبال‌کننده",
+  maxParticipents:"مشارکت کننده‌ها",
   totalValue: "ارزش کل کمپین",
   earn: "درآمد شما",
   forEach: "برای هر تأیید شده",
@@ -82,6 +84,7 @@ export type AdCardProps = {
   platform: string;
   campaignType?: string;
   followers: number;
+  participents:number;
   price: number;
   payPerPost: number;
   actionLabel: string;
@@ -113,6 +116,7 @@ export const AdCard: React.FC<AdCardProps> = ({
   platform,
   campaignType,
   followers,
+  participents,
   price,
   payPerPost,
   actionLabel,
@@ -199,12 +203,21 @@ export const AdCard: React.FC<AdCardProps> = ({
             </div>
           )}
 
-          {/* Followers */}
-          <div className="mb-2 d-flex flex-wrap gap-3 align-items-center">
-            <span>
-              <Person /> <strong>{labels.followers}:</strong> {toDisplay(followers)}
-            </span>
-          </div>
+        <div className="mb-2 d-flex flex-wrap gap-3 align-items-center">
+  <span>
+    <Person /> <strong>{labels.followers}:</strong> {toDisplay(followers)}
+  </span>
+  {hasCapacity && (
+    <span>
+      <PeopleFill style={{ verticalAlign: "middle", marginLeft: 2, marginRight: 2 }} />
+      <strong>{language === "fa" ? "تعداد شرکت‌کنندگان" : "Participants"}:</strong>{" "}
+      {toDisplay(participents)}
+    </span>
+  )}
+</div>
+
+
+          
 
           {/* Value & Payouts */}
           <div>
