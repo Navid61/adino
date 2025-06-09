@@ -1,5 +1,6 @@
 // pages/HowItWorks.tsx
 import React from "react";
+import * as Icons from "react-icons/fa";
 import {
   HowItWorksWrapper,
   SectionTitle,
@@ -8,77 +9,69 @@ import {
   RuleList,
   BenefitList,
   Section,
-} from "../styles/HowItWorksStyled";
+  Tagline,
+  ExtraSection,
+} from "../styles/HowItWorks.styled";
+import en from "../content/howItWorks.en";
+import fa from "../content/howItWorks.fa";
+
+// If you want to add language switching, you can change this import dynamically
+const content = fa;
+const isRtl = true;
 
 export const HowItWorks: React.FC = () => (
-  <HowItWorksWrapper>
-    <SectionTitle>How It Works</SectionTitle>
-
+  <HowItWorksWrapper dir={isRtl ? "rtl" : "ltr"}>
+    <SectionTitle>{content.sectionTitle}</SectionTitle>
     <Section>
       <StepsList>
-        <StepCard>
-          <h3>1. Sign Up & Create Your Profile</h3>
-          <p>
-            Quickly register with email or your social accounts. Add your social media pages—Instagram, YouTube, Telegram, and more. Your dashboard shows earnings, campaigns, and posts.
-          </p>
-        </StepCard>
-        <StepCard>
-          <h3>2. Browse Campaigns & Accept Offers</h3>
-          <p>
-            See available campaigns from brands, including what content to create and how much you earn. Accept the campaigns you want to join.
-          </p>
-        </StepCard>
-        <StepCard>
-          <h3>3. Complete & Upload Your Post</h3>
-          <p>
-            Create your post, story, or video as described. Upload your post link, screenshot, or video as proof in your dashboard.
-          </p>
-        </StepCard>
-        <StepCard>
-          <h3>4. Get Reviewed & Paid</h3>
-          <p>
-            The brand reviews your post. If approved, your earnings are added to your balance. Withdraw anytime—quickly and securely!
-          </p>
-        </StepCard>
+        {content.steps.map((step, idx) => {
+          const Icon = Icons[step.icon as keyof typeof Icons];
+          return (
+            <StepCard key={idx}>
+              {Icon && <Icon size={40} className="icon" />}
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </StepCard>
+          );
+        })}
       </StepsList>
     </Section>
 
+    <ExtraSection>
+      <h2>
+        <Icons.FaHandHoldingUsd /> {content.uniqueAdvantages.title}
+      </h2>
+      <ul>
+        {content.uniqueAdvantages.items.map((item, idx) => (
+          <li key={idx}>{item}</li>
+        ))}
+      </ul>
+    </ExtraSection>
+
     <Section>
-      <h2>Key Rules & Policies</h2>
+      <h2>
+        <Icons.FaCheckCircle /> {content.rules.title}
+      </h2>
       <RuleList>
-        <li>
-          <strong>No fake followers or bots:</strong> Only real, active pages are allowed.
-        </li>
-        <li>
-          <strong>Fair payment:</strong> Your earnings are based on your audience and campaign type.
-        </li>
-        <li>
-          <strong>Honest work:</strong> Follow each brand’s instructions for approval.
-        </li>
-        <li>
-          <strong>Privacy:</strong> Your private info and payments are 100% secure.
-        </li>
+        {content.rules.items.map((item, idx) => (
+          <li key={idx}>{item}</li>
+        ))}
       </RuleList>
     </Section>
 
     <Section>
-      <h2>Benefits</h2>
+      <h2>
+        <Icons.FaBolt /> {content.benefits.title}
+      </h2>
       <BenefitList>
-        <li>
-          <strong>Fast payments:</strong> Get paid for every approved post.
-        </li>
-        <li>
-          <strong>Easy to use:</strong> No tech skills needed.
-        </li>
-        <li>
-          <strong>Full control:</strong> Choose only the campaigns you want.
-        </li>
-        <li>
-          <strong>Support:</strong> Friendly help is always available.
-        </li>
+        {content.benefits.items.map((item, idx) => (
+          <li key={idx}>{item}</li>
+        ))}
       </BenefitList>
     </Section>
 
-    <div className="tagline">Adino: Simple, fair, and rewarding advertising for everyone!</div>
+    <Tagline>
+      {content.tagline}
+    </Tagline>
   </HowItWorksWrapper>
 );

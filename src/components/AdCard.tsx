@@ -86,16 +86,6 @@ const labelsFa = {
   status: "وضعیت",
 };
 
-const PROVIDER_TYPES: Record<"en" | "fa", Record<string, string>> = {
-  en: {
-    company: "Advertiser/Company",
-    participant: "Participant/Creator"
-  },
-  fa: {
-    company: "شرکت تبلیغ‌دهنده",
-    participant: "شرکت‌کننده"
-  }
-};
 
 function faNum(str: string | number) {
   const faDigits = "۰۱۲۳۴۵۶۷۸۹";
@@ -107,7 +97,7 @@ export type AdCardProps = {
   platform: string;
   campaignType?: string;
   followers: number;
-  participents: number;
+  participants: number;
   price: number;
   payPerPost: number;
   actionLabel: string;
@@ -140,7 +130,7 @@ export const AdCard: React.FC<AdCardProps> = ({
   platform,
   campaignType,
   followers,
-  participents,
+ participants,
   price,
   payPerPost,
   actionLabel,
@@ -237,7 +227,7 @@ export const AdCard: React.FC<AdCardProps> = ({
             {hasCapacity && (
               <span>
                 <PeopleFill style={{ verticalAlign: "middle", marginLeft: 2, marginRight: 2 }} />
-                <strong>{labels.maxParticipents}:</strong> {toDisplay(participents)}
+                <strong>{labels.maxParticipents}:</strong> {toDisplay(participants)}
               </span>
             )}
           </div>

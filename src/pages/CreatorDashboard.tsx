@@ -72,7 +72,7 @@ export const CreatorDashboard: React.FC = () => {
         </Col>
         <Col md={4} sm={6} xs={12} className="mb-3">
           <StatCard>
-            <h4>Pending Post</h4>
+            <h4>Approved Post</h4>
             <span>1</span>
           </StatCard>
         </Col>
